@@ -44,7 +44,8 @@ void APlayerDeerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerDeerController::Movement);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerDeerController::CameraLook);
-
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerDeerController::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &APlayerDeerController::StopJump);
 
 	}
 
@@ -89,5 +90,17 @@ void APlayerDeerController::CameraLook(const FInputActionValue& Value)
 	}
 
 
+
+}
+
+void APlayerDeerController::Jump()
+{
+	GetCharacter()->Jump();
+
+}
+
+void APlayerDeerController::StopJump()
+{
+	GetCharacter()->StopJumping();
 
 }
