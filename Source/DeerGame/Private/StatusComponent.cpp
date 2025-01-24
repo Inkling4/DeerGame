@@ -9,7 +9,8 @@ UStatusComponent::UStatusComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
+	Health = 0;
+	MaxHealth = 0;
 	// ...
 }
 
@@ -18,7 +19,7 @@ UStatusComponent::UStatusComponent()
 void UStatusComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	Health = MaxHealth;
 	// ...
 	
 }
@@ -32,3 +33,23 @@ void UStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
+int UStatusComponent::getHealth()
+{
+	return Health;
+}
+void UStatusComponent::setHealth(int NewHealth)
+{
+	Health = NewHealth;
+	if (Health < 0)
+	{
+		Health = 0;
+	}
+}
+void UStatusComponent::takeDamage(int Damage)
+{
+	Health -= Damage;
+	if (Health < 0)
+	{
+		Health = 0;
+	}
+}
