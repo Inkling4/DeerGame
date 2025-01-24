@@ -46,6 +46,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+	UInputAction* JumpAction;
 
 
 
@@ -58,6 +60,11 @@ public:
 	void CameraLook(const FInputActionValue& Value);
 
 
+	UFUNCTION(BlueprintCallable)
+	void Jump();
+
+	UFUNCTION(BlueprintCallable)
+	void StopJump();
 
 	
 };
