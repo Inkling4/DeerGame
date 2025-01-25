@@ -32,4 +32,6 @@ public:
 	void TakeDamage(int Damage);
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int Health;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	bool bIsInvincible;
 };

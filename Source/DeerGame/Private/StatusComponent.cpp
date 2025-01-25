@@ -40,6 +40,10 @@ int UStatusComponent::GetHealth() const //Returns the current health of actor as
 
 void UStatusComponent::TakeDamage(int Damage) //Actor loses health equal to input parameter (int)
 {
+	if (bIsInvincible)
+	{
+		return;
+	}
 	Health -= Damage;
 	if (Health < 0)
 	{
