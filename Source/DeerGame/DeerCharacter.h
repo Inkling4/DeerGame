@@ -44,6 +44,18 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Horns")
 	class UBoxComponent* HornsBoxCollider;
 
+	bool bSpeedBoost;
+	FTimerHandle TimerHandle;
+
+	UFUNCTION()
+	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void IncreaseSpeed();
+
+	UFUNCTION()
+	void DecreaseSpeedOverTime();
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	UStatusComponent* StatusComp;

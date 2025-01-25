@@ -5,11 +5,14 @@
 
 #include "AssetTypeCategories.h"
 #include "AudioDevice.h"
+#include "DeerCharacter.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 
 APlayerDeerController::APlayerDeerController()
@@ -31,6 +34,12 @@ void APlayerDeerController::BeginPlay()
 	}
 
 	ProfileName = GetCharacter()->GetMesh()->GetCollisionProfileName();
+
+	if (DeerCharacter == nullptr)
+	{
+		DeerCharacter = Cast<ADeerCharacter>(GetCharacter());
+	}
+
 	
 
 }
@@ -40,6 +49,8 @@ void APlayerDeerController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	FollowRagDoll(DeltaSeconds);
+
+	
 	
 }
 
@@ -55,6 +66,8 @@ void APlayerDeerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerDeerController::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &APlayerDeerController::StopJump);
 		EnhancedInputComponent->BindAction(RagDollAction, ETriggerEvent::Triggered, this, &APlayerDeerController::RagDoll);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &APlayerDeerController::Attack);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerDeerController::StopAttack);
 
 	}
 
@@ -64,11 +77,11 @@ void APlayerDeerController::SetupInputComponent()
 void APlayerDeerController::Movement(const FInputActionValue& Value)
 {
 
-	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Bitch"));
+	//GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Bitch"));
 
 	FVector2D MoveInput = Value.Get<FVector2D>();
 
-	//GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Bitch"));
+	
 	if (GetCharacter() != nullptr)
 	{
 		const FRotator YawPlayerRotation = FRotator(0, GetControlRotation().Yaw, 0);
@@ -114,11 +127,43 @@ void APlayerDeerController::StopJump()
 
 }
 
+void APlayerDeerController::testy()
+{
+	DeerCharacter->DecreaseSpeedOverTime();
+}
+
 void APlayerDeerController::Attack()
 {
+	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Attack"));
 
 	//bIsAttacking = true;
 
+	DeerCharacter->HornsBoxCollider->Activate();
+	
+
+	if (!bIsAttacking)
+	{
+		bIsAttacking = true;
+		DeerCharacter->IncreaseSpeed();
+		FTimerHandle Time;
+		GetWorld()->GetTimerManager().SetTimer(Time, this, &APlayerDeerController::testy, 3.0, false);
+	}
+	
+	
+
+
+}
+
+void APlayerDeerController::StopAttack()
+{
+	GEngine->AddOnScreenDebugMessage(3, 5, FColor::Red, FString("StopAttacking"));
+	if (bIsAttacking)
+	{
+		DeerCharacter->HornsBoxCollider->Deactivate();
+		DeerCharacter->DecreaseSpeedOverTime();
+		bIsAttacking = false;
+
+	}
 
 }
 
