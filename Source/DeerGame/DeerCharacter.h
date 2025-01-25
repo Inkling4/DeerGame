@@ -37,8 +37,11 @@ public:
 	class USpringArmComponent* SpringArm;
 
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Horns")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Horns")
 	class UStaticMeshComponent* Horns;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Horns")
+	class UBoxComponent* HornsBoxCollider;
 
 
 };

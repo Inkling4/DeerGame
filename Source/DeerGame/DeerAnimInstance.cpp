@@ -24,6 +24,11 @@ void UDeerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Velocity.Z = 0.0;
 		Speed = Velocity.Size();
 
+		if (DeerController)
+		{
+			bIsAttacking = DeerController->bIsAttacking;
+		}
+
 	}
 
 

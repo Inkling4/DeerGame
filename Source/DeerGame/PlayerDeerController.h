@@ -49,7 +49,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
 	UInputAction* JumpAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+	UInputAction* AttackAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+	UInputAction* AbilityAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+	UInputAction* RagDollAction;
 
 	//Move function
 	UFUNCTION(BlueprintCallable)
@@ -65,6 +72,38 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void StopJump();
+
+
+	//Attack
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	bool bIsAttacking;
+
+
+	UFUNCTION(BlueprintCallable)
+	void Attack();
+
+
+
+	//Use Ability
+	UFUNCTION(BlueprintCallable)
+	void UseAbility();
+
+	
+
+	//Ragdoll
+	UPROPERTY()
+	FName ProfileName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bIsRagdoll;
+
+	UFUNCTION(BlueprintCallable)
+	void RagDoll();
+
+	void FollowRagDoll(float Deltatime);
+
+	void EndRagdoll();
 
 	
 };
