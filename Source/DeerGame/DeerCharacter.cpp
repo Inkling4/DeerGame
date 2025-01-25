@@ -42,6 +42,7 @@ ADeerCharacter::ADeerCharacter()
 	HornsBoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Horns BoxCollider"));
 	HornsBoxCollider->SetupAttachment(Horns);
 
+	bSpeedBoost = true;
 
 }
 
@@ -49,7 +50,8 @@ ADeerCharacter::ADeerCharacter()
 void ADeerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	HornsBoxCollider->Deactivate();
+	HornsBoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ADeerCharacter::OnBoxBeginOverlap);
 }
 
 // Called every frame
@@ -57,12 +59,84 @@ void ADeerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//GEngine->AddOnScreenDebugMessage(5, 5, FColor::Blue, FString::Printf(TEXT("%f"),GetCharacterMovement()->Velocity.Length()));
+
 }
 
 // Called to bind functionality to input
 void ADeerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
+void ADeerCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	
+	AActor* Actor = OtherActor;
+	if (Actor == this)
+	{
+		return;
+	}
+	
+	if (Actor != nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Yellow, FString("Daddy No"));
+
+	}
+
+	/*if (OtherActor == nullptr)
+	{
+		Actor = Cast<AActor>(OtherActor);
+
+	}*/
+
+	/*if (Actor == nullptr)
+	{
+
+		ADeerCharacter* DeerPlayer = Cast<ADeerCharacter>(Actor);
+
+	}*/
+
+
+}
+
+void ADeerCharacter::IncreaseSpeed()
+{
+	
+		GetCharacterMovement()->MaxAcceleration = 4048.0;
+		GetCharacterMovement()->MaxWalkSpeed = 1000;
+
+		if (!GetWorld()->GetTimerManager().IsTimerActive(TimerHandle))
+		{
+			GEngine->AddOnScreenDebugMessage(5, 5, FColor::Green, FString("hmm"));
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADeerCharacter::DecreaseSpeedOverTime, 3.0f);
+		}
+		//GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADeerCharacter::DecreaseSpeedOverTime, 3.0f);
+	
+	
+
+
+
+	
+
+}
+
+void ADeerCharacter::DecreaseSpeedOverTime()
+{
+
+	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, FString("Decrease speed"));
+	float CurrentVelocity = GetCharacterMovement()->MaxWalkSpeed;
+	float NewSpeed = FMath::FInterpTo(CurrentVelocity, 600, GetWorld()->GetTimeSeconds(), 250.0f);
+
+	GetCharacterMovement()->MaxWalkSpeed = NewSpeed;
+	if (NewSpeed <= 600)
+	{
+		GEngine->AddOnScreenDebugMessage(3, 5, FColor::Red, FString("Normal"));
+		GetCharacterMovement()->MaxAcceleration = 2048.0;
+		GetCharacterMovement()->MaxWalkSpeed = 600;
+
+	}
 
 }
 
