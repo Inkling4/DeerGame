@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DeerCharacter.h"
 #include "GameFramework/PlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "PlayerDeerController.generated.h"
@@ -36,6 +37,8 @@ protected:
 
 public:
 
+	UPROPERTY()
+	ADeerCharacter* DeerCharacter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "InputMapping")
 	UInputMappingContext* DeerMappingContext;
@@ -76,12 +79,17 @@ public:
 
 	//Attack
 
+	
+
+	void testy();
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	bool bIsAttacking;
 
 
 	UFUNCTION(BlueprintCallable)
 	void Attack();
+
+	void StopAttack();
 
 
 
