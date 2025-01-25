@@ -37,4 +37,8 @@ public:
 	class USpringArmComponent* SpringArm;
 
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Horns")
+	class UStaticMeshComponent* Horns;
+
+
 };

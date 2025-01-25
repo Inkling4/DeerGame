@@ -34,6 +34,9 @@ ADeerCharacter::ADeerCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 600.f, 0.0f);
 	GetCharacterMovement()->bIgnoreBaseRotation = true;
 
+	Horns = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Horns"));
+	Horns->SetupAttachment(GetMesh(),FName("Head"));
+
 }
 
 // Called when the game starts or when spawned
