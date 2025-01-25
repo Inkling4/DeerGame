@@ -58,5 +58,5 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
-	UStatusComponent* StatusComp;
+	UStatusComponent* StatusComponent;
 };

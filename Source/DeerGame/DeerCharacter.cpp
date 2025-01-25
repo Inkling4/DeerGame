@@ -44,6 +44,8 @@ ADeerCharacter::ADeerCharacter()
 
 	bSpeedBoost = true;
 
+	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("Status Component"));
+
 }
 
 // Called when the game starts or when spawned
