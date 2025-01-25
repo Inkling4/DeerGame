@@ -37,6 +37,8 @@ ADeerCharacter::ADeerCharacter()
 	Horns = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Horns"));
 	Horns->SetupAttachment(GetMesh(),FName("Head"));
 
+	StatusComp = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
+
 }
 
 // Called when the game starts or when spawned

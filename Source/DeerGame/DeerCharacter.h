@@ -41,4 +41,7 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Horns")
 	class UStaticMeshComponent* Horns;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	UStatusComponent* StatusComp;
 };
