@@ -41,6 +41,7 @@ ADeerCharacter::ADeerCharacter()
 
 	HornsBoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Horns BoxCollider"));
 	HornsBoxCollider->SetupAttachment(Horns);
+	HornsBoxCollider->SetCollisionProfileName(FName("OverlapAll"));
 
 	bSpeedBoost = true;
 
@@ -79,24 +80,32 @@ void ADeerCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAct
 		return;
 	}
 	
-	if (Actor != nullptr)
+	if (Actor != nullptr && Actor->ActorHasTag("Player"))
 	{
 		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Yellow, FString("Daddy No"));
 
+		ADeerCharacter* OtherDeer = Cast<ADeerCharacter>(Actor);
+
+
+
+
+		//if (OtherDeer && OtherDeer != this && OtherComp == OtherDeer->HornsBoxCollider)
+		//{
+		//	GEngine->AddOnScreenDebugMessage(3, 5, FColor::Yellow, FString("Perfect"));
+
+
+		//	OtherDeer->AttachToComponent(HornsBoxCollider, FAttachmentTransformRules::SnapToTargetIncludingScale);
+
+		//	
+		//	
+
+		//}
+
+
 	}
 
-	/*if (OtherActor == nullptr)
-	{
-		Actor = Cast<AActor>(OtherActor);
+	
 
-	}*/
-
-	/*if (Actor == nullptr)
-	{
-
-		ADeerCharacter* DeerPlayer = Cast<ADeerCharacter>(Actor);
-
-	}*/
 
 
 }
