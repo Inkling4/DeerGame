@@ -43,6 +43,8 @@ ADeerCharacter::ADeerCharacter()
 	HornsBoxCollider->SetupAttachment(Horns);
 
 
+	StatusComp = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
+
 }
 
 // Called when the game starts or when spawned
@@ -56,7 +58,7 @@ void ADeerCharacter::BeginPlay()
 void ADeerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input

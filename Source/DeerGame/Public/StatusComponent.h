@@ -26,8 +26,12 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	int MaxHealth;
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	int GetHealth() const;
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void TakeDamage(int Damage);
+	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int Health;
-	int getHealth();
-	void setHealth(int NewHealth);
-	void takeDamage(int Damage);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	bool bIsInvincible;
 };

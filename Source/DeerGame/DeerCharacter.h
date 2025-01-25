@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "StatusComponent.h"
 #include "DeerCharacter.generated.h"
 
 UCLASS()
@@ -44,4 +45,6 @@ public:
 	class UBoxComponent* HornsBoxCollider;
 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	UStatusComponent* StatusComp;
 };
