@@ -30,7 +30,7 @@ void APlayerDeerController::BeginPlay()
 		Subsystem->AddMappingContext(DeerMappingContext, 0);
 	}
 
-	ProfileName = GetCharacter()->GetMesh()->GetCollisionProfileName();
+	//ProfileName = GetCharacter()->GetMesh()->GetCollisionProfileName();
 	
 
 }
@@ -186,7 +186,7 @@ void APlayerDeerController::EndRagdoll()
 	{
 		GetCharacter()->GetCapsuleComponent()->Activate();
 		Mesh->SetSimulatePhysics(false);
-		Mesh->SetCollisionProfileName(FName(ProfileName));
+		//Mesh->SetCollisionProfileName(FName(ProfileName));
 		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 		GetCharacter()->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		Mesh->AttachToComponent(GetCharacter()->GetCapsuleComponent(),FAttachmentTransformRules::SnapToTargetIncludingScale);
