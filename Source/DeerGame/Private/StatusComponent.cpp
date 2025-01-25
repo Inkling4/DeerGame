@@ -30,22 +30,15 @@ void UStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	
 }
 
-int UStatusComponent::getHealth()
+int UStatusComponent::GetHealth() const //Returns the current health of actor as an int
 {
 	return Health;
 }
-void UStatusComponent::setHealth(int NewHealth)
-{
-	Health = NewHealth;
-	if (Health < 0)
-	{
-		Health = 0;
-	}
-}
-void UStatusComponent::takeDamage(int Damage)
+
+void UStatusComponent::TakeDamage(int Damage) //Actor loses health equal to input parameter (int)
 {
 	Health -= Damage;
 	if (Health < 0)

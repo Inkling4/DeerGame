@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "StatusComponent.h"
 #include "DeerCharacter.generated.h"
 
 UCLASS()
@@ -39,6 +40,5 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Horns")
 	class UStaticMeshComponent* Horns;
-
 
 };

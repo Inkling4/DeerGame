@@ -50,7 +50,7 @@ void ADeerCharacter::BeginPlay()
 void ADeerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input

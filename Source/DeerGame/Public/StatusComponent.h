@@ -26,8 +26,7 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	int MaxHealth;
+	int GetHealth() const;
+	void TakeDamage(int Damage);
 	int Health;
-	int getHealth();
-	void setHealth(int NewHealth);
-	void takeDamage(int Damage);
 };
