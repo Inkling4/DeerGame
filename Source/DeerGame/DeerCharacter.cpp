@@ -4,6 +4,7 @@
 #include "DeerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 ADeerCharacter::ADeerCharacter()
@@ -31,11 +32,16 @@ ADeerCharacter::ADeerCharacter()
 
 	//Player rotation rate
 
+	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 600.f, 0.0f);
 	GetCharacterMovement()->bIgnoreBaseRotation = true;
 
 	Horns = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Horns"));
-	Horns->SetupAttachment(GetMesh(),FName("Head"));
+	Horns->SetupAttachment(GetMesh(), FName("HornsSocket"));
+
+	HornsBoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Horns BoxCollider"));
+	HornsBoxCollider->SetupAttachment(Horns);
+
 
 }
 

@@ -33,4 +33,8 @@ protected:
 	float Speed;
 
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attack")
+	bool bIsAttacking;
+
+
 };

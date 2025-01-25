@@ -2,15 +2,22 @@
 
 
 #include "PlayerDeerController.h"
+
+#include "AssetTypeCategories.h"
+#include "AudioDevice.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 
 APlayerDeerController::APlayerDeerController()
 {
 
-
+	bIsAttacking = false;
+	bIsRagdoll = false;
+	
 
 }
 
@@ -23,7 +30,8 @@ void APlayerDeerController::BeginPlay()
 		Subsystem->AddMappingContext(DeerMappingContext, 0);
 	}
 
-
+	ProfileName = GetCharacter()->GetMesh()->GetCollisionProfileName();
+	
 
 }
 
@@ -31,8 +39,8 @@ void APlayerDeerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-
-
+	FollowRagDoll(DeltaSeconds);
+	
 }
 
 void APlayerDeerController::SetupInputComponent()
@@ -46,6 +54,7 @@ void APlayerDeerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerDeerController::CameraLook);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerDeerController::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &APlayerDeerController::StopJump);
+		EnhancedInputComponent->BindAction(RagDollAction, ETriggerEvent::Triggered, this, &APlayerDeerController::RagDoll);
 
 	}
 
@@ -102,5 +111,90 @@ void APlayerDeerController::Jump()
 void APlayerDeerController::StopJump()
 {
 	GetCharacter()->StopJumping();
+
+}
+
+void APlayerDeerController::Attack()
+{
+
+	//bIsAttacking = true;
+
+
+}
+
+void APlayerDeerController::UseAbility()
+{
+
+
+
+
+}
+
+void APlayerDeerController::RagDoll()
+{
+	if (bIsRagdoll)
+	{
+		return;
+	}
+
+	SetIgnoreMoveInput(true);
+	
+	
+	if (USkeletalMeshComponent* Mesh = GetCharacter()->GetMesh())
+	{
+		Mesh->SetCollisionProfileName(FName("Ragdoll"));
+		Mesh->SetSimulatePhysics(true);
+		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
+		GetCharacter()->GetCapsuleComponent()->Deactivate();
+		bIsRagdoll = true;
+
+	}
+
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,this, &APlayerDeerController::EndRagdoll, 3.0f, false);
+
+}
+
+void APlayerDeerController::FollowRagDoll(float Deltatime)
+{
+	if (!bIsRagdoll)
+	{
+		return;
+	}
+	if (USkeletalMeshComponent* Mesh = GetCharacter()->GetMesh())
+	{
+		if (UCapsuleComponent* Capsule = Cast<UCapsuleComponent>(GetCharacter()->GetCapsuleComponent()) )
+		{
+			Capsule->SetWorldLocation(Mesh->GetSocketLocation(FName("Spine1")));
+
+		}
+
+	}
+
+
+}
+
+void APlayerDeerController::EndRagdoll()
+{
+	if (!bIsRagdoll)
+	{
+		return;
+	}
+
+	SetIgnoreMoveInput(false);
+	if (USkeletalMeshComponent* Mesh = GetCharacter()->GetMesh())
+	{
+		GetCharacter()->GetCapsuleComponent()->Activate();
+		Mesh->SetSimulatePhysics(false);
+		Mesh->SetCollisionProfileName(FName(ProfileName));
+		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+		GetCharacter()->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		Mesh->AttachToComponent(GetCharacter()->GetCapsuleComponent(),FAttachmentTransformRules::SnapToTargetIncludingScale);
+		Mesh->SetRelativeLocationAndRotation(FVector(-7.0, 0.0, -90), FRotator(0.0, -90.0, 0.0));
+		
+		bIsRagdoll = false;
+
+	}
+
 
 }
