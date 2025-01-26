@@ -14,14 +14,13 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 
 APlayerDeerController::APlayerDeerController()
 {
 
 	bIsAttacking = false;
 	bIsRagdoll = false;
-	
-
 }
 
 void APlayerDeerController::BeginPlay()
@@ -127,47 +126,6 @@ void APlayerDeerController::StopJump()
 
 }
 
-void APlayerDeerController::testy()
-{
-	DeerCharacter->DecreaseSpeedOverTime();
-}
-
-void APlayerDeerController::Attack()
-{
-	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Attack"));
-
-	//bIsAttacking = true;
-
-	
-	
-	
-	if (!bIsAttacking)
-	{
-		DeerCharacter->EnableBoxCollision();
-		bIsAttacking = true;
-		DeerCharacter->IncreaseSpeed();
-		FTimerHandle Time;
-		GetWorld()->GetTimerManager().SetTimer(Time, this, &APlayerDeerController::testy, 3.0, false);
-	}
-	
-	
-
-
-}
-
-void APlayerDeerController::StopAttack()
-{
-	GEngine->AddOnScreenDebugMessage(3, 5, FColor::Red, FString("StopAttacking"));
-	if (bIsAttacking)
-	{
-		DeerCharacter->DisableBoxCollision();
-		DeerCharacter->DecreaseSpeedOverTime();
-		bIsAttacking = false;
-
-	}
-
-}
-
 void APlayerDeerController::UseAbility()
 {
 
@@ -245,50 +203,35 @@ void APlayerDeerController::EndRagdoll()
 
 }
 
-void APlayerDeerController::Emote1_Implementation()
+void APlayerDeerController::Emote1()
 {
-	bIsEmoting1 = true;
-
-	if (HasAuthority())
+	if (IsValid(DeerCharacter))
 	{
-		RPC_Server_Emote1();
-
-		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Emote Auth"));
-	}
-
-	else
-	{
-		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Emote Client"));
-
-		RPC_Server_Emote1();
+		DeerCharacter->Emote1();
 	}
 }
 
-bool APlayerDeerController::RPC_Server_Emote1_Validate()
-{
-	return true;
-}
-
-void APlayerDeerController::RPC_Server_Emote1_Implementation()
-{
-	bIsEmoting1 = true;
-
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Emote Server"));
-}
-
-void APlayerDeerController::EndEmote1()
-{
-	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Bitch"));
-	bIsEmoting1 = false;
-}
 
 void APlayerDeerController::Emote2()
 {
-	bIsEmoting2 = true;
+	if (IsValid(DeerCharacter))
+	{
+		DeerCharacter->Emote2();
+	}
 }
 
-void APlayerDeerController::EndEmote2()
+void APlayerDeerController::Attack()
 {
+	if (IsValid(DeerCharacter))
+	{
+		DeerCharacter->Attack();
+	}
+}
 
-	bIsEmoting2 = false;
+void APlayerDeerController::StopAttack()
+{
+	if (IsValid(DeerCharacter))
+	{
+		DeerCharacter->StopAttack();
+	}
 }
