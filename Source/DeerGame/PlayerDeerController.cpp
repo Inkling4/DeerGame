@@ -45,7 +45,7 @@ void APlayerDeerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	FollowRagDoll(DeltaSeconds);
+	//FollowRagDoll(DeltaSeconds);
 
 	
 	
@@ -142,41 +142,32 @@ void APlayerDeerController::RagDoll()
 	}
 
 	SetIgnoreMoveInput(true);
-	
-	
-	if (USkeletalMeshComponent* Mesh = GetCharacter()->GetMesh())
+	if (IsValid(DeerCharacter))
 	{
-		Mesh->SetCollisionProfileName(FName("Ragdoll"));
-		Mesh->SetSimulatePhysics(true);
-		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
-		GetCharacter()->GetCapsuleComponent()->Deactivate();
-		bIsRagdoll = true;
+		DeerCharacter->RagDoll();
 
 	}
-
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle,this, &APlayerDeerController::EndRagdoll, 3.0f, false);
-
+	bIsRagdoll = true;
 }
-
-void APlayerDeerController::FollowRagDoll(float Deltatime)
-{
-	if (!bIsRagdoll)
-	{
-		return;
-	}
-	if (USkeletalMeshComponent* Mesh = GetCharacter()->GetMesh())
-	{
-		if (UCapsuleComponent* Capsule = Cast<UCapsuleComponent>(GetCharacter()->GetCapsuleComponent()) )
-		{
-			Capsule->SetWorldLocation(Mesh->GetSocketLocation(FName("Hip")));
-
-		}
-
-	}
-
-
-}
+//
+//void APlayerDeerController::FollowRagDoll(float Deltatime)
+//{
+//	if (!bIsRagdoll)
+//	{
+//		return;
+//	}
+//	if (USkeletalMeshComponent* Mesh = GetCharacter()->GetMesh())
+//	{
+//		if (UCapsuleComponent* Capsule = Cast<UCapsuleComponent>(GetCharacter()->GetCapsuleComponent()) )
+//		{
+//			Capsule->SetWorldLocation(Mesh->GetSocketLocation(FName("Hip")));
+//
+//		}
+//
+//	}
+//
+//
+//}
 
 void APlayerDeerController::EndRagdoll()
 {
@@ -185,21 +176,13 @@ void APlayerDeerController::EndRagdoll()
 		return;
 	}
 
-	SetIgnoreMoveInput(false);
-	if (USkeletalMeshComponent* Mesh = GetCharacter()->GetMesh())
+	
+	if (IsValid(DeerCharacter))
 	{
-		GetCharacter()->GetCapsuleComponent()->Activate();
-		Mesh->SetSimulatePhysics(false);
-		Mesh->SetCollisionProfileName(FName("CharacterMesh"));
-		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
-		GetCharacter()->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		Mesh->AttachToComponent(GetCharacter()->GetCapsuleComponent(),FAttachmentTransformRules::SnapToTargetIncludingScale);
-		Mesh->SetRelativeLocationAndRotation(FVector(-7.0, 0.0, -90), FRotator(0.0, -90.0, 0.0));
+		SetIgnoreMoveInput(false);
 		
-		bIsRagdoll = false;
-
 	}
-
+	bIsRagdoll = false;
 
 }
 

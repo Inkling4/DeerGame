@@ -108,7 +108,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RagDoll();
 
-	void FollowRagDoll(float Deltatime);
+	//void FollowRagDoll(float Deltatime);
 
 	void EndRagdoll();
 

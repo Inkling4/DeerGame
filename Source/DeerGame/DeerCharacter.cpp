@@ -2,9 +2,12 @@
 
 
 #include "DeerCharacter.h"
+
+#include "PlayerDeerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Net/UnrealNetwork.h"
 
 // Sets default values
@@ -76,6 +79,7 @@ void ADeerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	//GEngine->AddOnScreenDebugMessage(5, 5, FColor::Blue, FString::Printf(TEXT("%f"),GetCharacterMovement()->Velocity.Length()));
+	FollowRagDoll(DeltaTime);
 
 }
 
@@ -218,6 +222,76 @@ void ADeerCharacter::CPPStopAttack()
 		bIsAttacking = false;
 
 	}
+
+}
+
+void ADeerCharacter::RagDoll()
+{
+
+	if (bIsRagdoll)
+	{
+		return;
+	}
+
+
+	if (GetMesh())
+	{
+		SpringArm->bDoCollisionTest = false;
+		GetCapsuleComponent()->Deactivate(),
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
+		GetMesh()->SetCollisionProfileName(FName("Ragdoll"));
+		GetMesh()->SetSimulatePhysics(true);
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
+		bIsRagdoll = true;
+
+	}
+
+	FTimerHandle TimerHandleRagDoll;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandleRagDoll, this, &ADeerCharacter::EndRagdoll, 3.0f, false);
+
+}
+
+void ADeerCharacter::FollowRagDoll(float Deltatime)
+{
+
+	if (!bIsRagdoll)
+	{
+		return;
+	}
+	if (GetMesh())
+	{
+		if (GetCapsuleComponent())
+		{
+			GetCapsuleComponent()->SetWorldLocation(GetMesh()->GetSocketLocation(FName("Hip")));
+
+		}
+
+	}
+
+}
+
+void ADeerCharacter::EndRagdoll()
+{
+
+	if (!bIsRagdoll)
+	{
+		return;
+	}
+	SpringArm->bDoCollisionTest = false;
+	GetCapsuleComponent()->Activate();
+	GetMesh()->SetSimulatePhysics(false);
+	GetMesh()->SetCollisionProfileName(FName("CharacterMesh"));
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+	GetMesh()->SetRelativeLocationAndRotation(FVector(-7.0, 0.0, -90), FRotator(0.0, -90.0, 0.0));
+	if (APlayerDeerController* DeerController = Cast<APlayerDeerController>(GetController()))
+	{
+		DeerController->EndRagdoll();
+	}
+	
+
+	bIsRagdoll = false;
 
 }
 
