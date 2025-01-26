@@ -37,7 +37,7 @@ protected:
 
 public:
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite,Category="Input")
 	ADeerCharacter* DeerCharacter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "InputMapping")
@@ -123,6 +123,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes")
 	bool bIsEmoting2 = false;
+
 
 	UFUNCTION(BlueprintCallable)
 	void Emote1();

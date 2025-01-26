@@ -190,10 +190,11 @@ void APlayerDeerController::RagDoll()
 	
 	if (USkeletalMeshComponent* Mesh = GetCharacter()->GetMesh())
 	{
+		GetCharacter()->GetCapsuleComponent()->Deactivate();
 		Mesh->SetCollisionProfileName(FName("Ragdoll"));
 		Mesh->SetSimulatePhysics(true);
 		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
-		GetCharacter()->GetCapsuleComponent()->Deactivate();
+		
 		bIsRagdoll = true;
 
 	}
@@ -249,24 +250,35 @@ void APlayerDeerController::EndRagdoll()
 
 void APlayerDeerController::Emote1()
 {
+	if (bIsEmoting1)
+	{
+		return;
+	}
+	
 	bIsEmoting1 = true;
+	
 	
 }
 
 void APlayerDeerController::EndEmote1()
 {
 	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Bitch"));
+	
 	bIsEmoting1 = false;
 }
 
 void APlayerDeerController::Emote2()
 {
+	if (bIsEmoting2)
+	{
+		return;
+	}
 
 	bIsEmoting2 = true;
 }
 
 void APlayerDeerController::EndEmote2()
 {
-
+	
 	bIsEmoting2 = false;
 }
