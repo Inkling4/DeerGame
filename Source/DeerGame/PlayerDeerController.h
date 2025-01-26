@@ -37,7 +37,7 @@ protected:
 
 public:
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, Category = "Inputs")
 	ADeerCharacter* DeerCharacter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "InputMapping")
@@ -94,9 +94,8 @@ public:
 
 
 	//Use Ability
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void UseAbility();
-
 	
 
 	//Ragdoll
@@ -115,11 +114,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
 	UInputAction* Emote1Action;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Emotes")
 	bool bIsEmoting1 = false;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void Emote1();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void RPC_Server_Emote1();
+	bool RPC_Server_Emote1_Validate();
+	void RPC_Server_Emote1_Implementation();
 
 	UFUNCTION(BlueprintCallable)
 	void EndEmote1();

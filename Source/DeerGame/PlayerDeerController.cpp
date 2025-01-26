@@ -14,14 +14,23 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 
 APlayerDeerController::APlayerDeerController()
 {
 
 	bIsAttacking = false;
 	bIsRagdoll = false;
-	
 
+	bReplicates = true;
+
+}
+
+void APlayerDeerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(APlayerDeerController, bIsEmoting1);
 }
 
 void APlayerDeerController::BeginPlay()
@@ -168,11 +177,8 @@ void APlayerDeerController::StopAttack()
 
 }
 
-void APlayerDeerController::UseAbility()
+void APlayerDeerController::UseAbility_Implementation()
 {
-
-
-
 
 }
 
@@ -247,10 +253,35 @@ void APlayerDeerController::EndRagdoll()
 
 void APlayerDeerController::Emote1()
 {
+	if (HasAuthority())
+	{
+		bIsEmoting1 = true;
+	}
+	else
+	{
+		RPC_Server_Emote1();
+	}
+}
+
+bool APlayerDeerController::RPC_Server_Emote1_Validate()
+{
+	return true;
+}
+
+void APlayerDeerController::RPC_Server_Emote1_Implementation()
+{
+	bIsEmoting1 = true;
+}
+
+/*void APlayerDeerController::Emote1()
+{
 	bIsEmoting1 = true;
 	FTimerHandle TimerEmote1;
-	//GetWorld()->GetTimerManager().SetTimer(TimerEmote1, this, &APlayerDeerController::EndEmote1, 2.0f);
-}
+	GetWorld()->GetTimerManager().SetTimer(TimerEmote1, this, &APlayerDeerController::EndEmote1, 2.0f);
+}*/
+
+
+
 
 void APlayerDeerController::EndEmote1()
 {
