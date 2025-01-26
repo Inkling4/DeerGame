@@ -53,7 +53,7 @@ void UStatusComponent::TakeDamage(int Damage) //Actor loses health equal to inpu
 		return;
 	}
 	
-	Health -= Damage;
+	Health -= Damage/4;
 
 	InvulnerableTimer = InvulnerabilityDuration;
 	
