@@ -48,7 +48,7 @@ ADeerCharacter::ADeerCharacter()
 
 	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("Status Component"));
 
-	Damage = 20;
+	Damage = 5;
 
 	bReplicates = true;
 }
