@@ -114,10 +114,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
 	UInputAction* Emote1Action;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Emotes")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes", Replicated)
 	bool bIsEmoting1 = false;
 
-	UFUNCTION()
+	UFUNCTION(NetMulticast, Reliable)
 	void Emote1();
 
 	UFUNCTION(Server, Reliable, WithValidation)

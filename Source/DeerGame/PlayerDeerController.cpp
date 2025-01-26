@@ -49,8 +49,6 @@ void APlayerDeerController::BeginPlay()
 		DeerCharacter = Cast<ADeerCharacter>(GetCharacter());
 	}
 
-	
-
 }
 
 void APlayerDeerController::Tick(float DeltaSeconds)
@@ -251,14 +249,21 @@ void APlayerDeerController::EndRagdoll()
 
 }
 
-void APlayerDeerController::Emote1()
+void APlayerDeerController::Emote1_Implementation()
 {
+	bIsEmoting1 = true;
+
 	if (HasAuthority())
 	{
-		bIsEmoting1 = true;
+		RPC_Server_Emote1();
+
+		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Emote Auth"));
 	}
+
 	else
 	{
+		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Emote Client"));
+
 		RPC_Server_Emote1();
 	}
 }
@@ -271,6 +276,8 @@ bool APlayerDeerController::RPC_Server_Emote1_Validate()
 void APlayerDeerController::RPC_Server_Emote1_Implementation()
 {
 	bIsEmoting1 = true;
+
+	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Emote Server"));
 }
 
 /*void APlayerDeerController::Emote1()
