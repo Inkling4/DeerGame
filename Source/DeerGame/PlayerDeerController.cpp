@@ -3,7 +3,6 @@
 
 #include "PlayerDeerController.h"
 
-#include "AssetTypeCategories.h"
 #include "AudioDevice.h"
 #include "DeerCharacter.h"
 #include "GameFramework/Character.h"
