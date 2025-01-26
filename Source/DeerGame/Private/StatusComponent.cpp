@@ -41,11 +41,21 @@ int UStatusComponent::GetHealth() const //Returns the current health of actor as
 void UStatusComponent::TakeDamage(int Damage) //Actor loses health equal to input parameter (int)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, FString("ouch"));
-	if (bIsInvincible)
+	if (bIsInvincible )
 	{
 		return;
 	}
+
+	if (InvulnerableTimer > 0)
+	{
+		InvulnerableTimer -= GetWorld()->GetTimeSeconds();
+
+		return;
+	}
+	
 	Health -= Damage;
+
+	InvulnerableTimer = InvulnerabilityDuration;
 	
 	if (Health < 0)
 	{

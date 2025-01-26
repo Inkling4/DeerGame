@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 ADeerCharacter::ADeerCharacter()
@@ -48,6 +49,17 @@ ADeerCharacter::ADeerCharacter()
 	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("Status Component"));
 
 	Damage = 20;
+
+	bReplicates = true;
+}
+
+void ADeerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ADeerCharacter, bIsEmoting1);
+	DOREPLIFETIME(ADeerCharacter, bIsEmoting2);
+	DOREPLIFETIME(ADeerCharacter, bIsAttacking);
 }
 
 // Called when the game starts or when spawned
@@ -76,7 +88,7 @@ void ADeerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ADeerCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+	/*
 	AActor* Actor = OtherActor;
 	if (Actor == this)
 	{
@@ -99,26 +111,22 @@ void ADeerCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAct
 					StatusComp->TakeDamage(Damage);
 				}
 			}
-			/*if (OtherComp != OtherDeer->HornsBoxCollider)
+			if (OtherComp != OtherDeer->HornsBoxCollider)
 			{
 
 				OtherDeer->AttachToComponent(HornsBoxCollider, FAttachmentTransformRules::SnapToTargetIncludingScale);
-			}*/
+			}
 			
 		}
 
 
 	}
-
+	*/
 	
-
-
-
 }
 
 void ADeerCharacter::IncreaseSpeed()
 {
-	
 		GetCharacterMovement()->MaxAcceleration = 3048.0;
 		GetCharacterMovement()->MaxWalkSpeed = 1000;
 
@@ -127,14 +135,6 @@ void ADeerCharacter::IncreaseSpeed()
 			GEngine->AddOnScreenDebugMessage(5, 5, FColor::Green, FString("hmm"));
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADeerCharacter::DecreaseSpeedOverTime, 3.0f);
 		}
-		
-	
-	
-
-
-
-	
-
 }
 
 void ADeerCharacter::DecreaseSpeedOverTime()
@@ -169,3 +169,64 @@ void ADeerCharacter::DisableBoxCollision()
 
 }
 
+void ADeerCharacter::Emote1_Implementation()
+{
+	return;
+}
+
+
+void ADeerCharacter::Emote2_Implementation()
+{
+	return;
+}
+
+void ADeerCharacter::Attack_Implementation()
+{
+	return;
+}
+
+void ADeerCharacter::StopAttack_Implementation()
+{
+	return;
+}
+
+
+void ADeerCharacter::testy()
+{
+	DecreaseSpeedOverTime();
+}
+
+void ADeerCharacter::CPPAttack()
+{
+	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Attack"));
+		
+	if (!bIsAttacking)
+	{
+		EnableBoxCollision();
+		bIsAttacking = true;
+		StartDash();
+	}
+}
+
+void ADeerCharacter::CPPStopAttack()
+{
+	GEngine->AddOnScreenDebugMessage(3, 5, FColor::Red, FString("StopAttacking"));
+	if (bIsAttacking)
+	{
+		DisableBoxCollision();
+		DecreaseSpeedOverTime();
+		bIsAttacking = false;
+
+	}
+
+}
+
+void ADeerCharacter::StartDash_Implementation()
+{
+	return;
+}
+
+void ADeerCharacter::DashLoop_Implementation()
+{
+	return;
+}

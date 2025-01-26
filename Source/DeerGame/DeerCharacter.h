@@ -70,6 +70,42 @@ public:
 	UFUNCTION()
 	void DisableBoxCollision();
 
+	//Attack functions
+	void testy();
+
+	UFUNCTION(BlueprintCallable, Category = "Attack")
+	void CPPAttack();
+
+	UFUNCTION(BlueprintCallable, Category = "Attack")
+	void CPPStopAttack();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	UStatusComponent* StatusComponent;
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Emotes")
+	void Emote1();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Emotes")
+	void Emote2();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
+	void Attack();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
+	void StartDash();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
+	void DashLoop();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
+	void StopAttack();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes", Replicated)
+	bool bIsEmoting1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes", Replicated)
+	bool bIsEmoting2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes", Replicated)
+	bool bIsAttacking;
 };

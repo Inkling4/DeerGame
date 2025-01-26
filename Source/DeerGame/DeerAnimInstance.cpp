@@ -30,15 +30,12 @@ void UDeerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(DeerCharacter->GetVelocity());
 
 		bIsFalling = DeerCharacter->GetCharacterMovement()->IsFalling();
-
+		bIsEmote1 = DeerCharacter->bIsEmoting1;
+		bIsEmote2 = DeerCharacter->bIsEmoting2;
+		bIsAttacking = DeerCharacter->bIsAttacking;
+		
+		if (GEngine && bIsEmote1) GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Black, FString::Printf(TEXT("%hs"), bIsEmote1 ? "true" : "false"));
 		MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation).Yaw;
-
-		if (DeerController)
-		{
-			bIsAttacking = DeerController->bIsAttacking;
-			bIsEmote1 = DeerController->bIsEmoting1;
-			bIsEmote2 = DeerController->bIsEmoting2;
-		}
 
 	}
 

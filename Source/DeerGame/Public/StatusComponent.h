@@ -12,6 +12,8 @@ class DEERGAME_API UStatusComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
+	float InvulnerableTimer;
+
 public:
 	// Sets default values for this component's properties
 
@@ -34,4 +36,7 @@ public:
 	int Health;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	bool bIsInvincible;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	float InvulnerabilityDuration;
 };
