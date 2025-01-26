@@ -44,6 +44,10 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Horns")
 	class UBoxComponent* HornsBoxCollider;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Horns")
+	int Damage;
+
+
 	bool bSpeedBoost;
 	FTimerHandle TimerHandle;
 

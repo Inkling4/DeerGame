@@ -47,13 +47,14 @@ ADeerCharacter::ADeerCharacter()
 
 	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("Status Component"));
 
+	Damage = 20;
 }
 
 // Called when the game starts or when spawned
 void ADeerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+	//HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	HornsBoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ADeerCharacter::OnBoxBeginOverlap);
 }
 
@@ -84,24 +85,27 @@ void ADeerCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAct
 	
 	if (Actor != nullptr && Actor->ActorHasTag("Player"))
 	{
-		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Yellow, FString("Daddy No"));
-
+		
 		ADeerCharacter* OtherDeer = Cast<ADeerCharacter>(Actor);
+		if (OtherDeer != this)
+		{
+			if (OtherComp != OtherDeer->HornsBoxCollider)
+			{
+				GEngine->AddOnScreenDebugMessage(2, 5, FColor::Yellow, FString::Printf(TEXT("%s"), *OtherDeer->GetName()));
+				UStatusComponent* StatusComp = OtherDeer->FindComponentByClass<UStatusComponent>();
+				if (StatusComp != nullptr)
+				{
 
+					StatusComp->TakeDamage(Damage);
+				}
+			}
+			/*if (OtherComp != OtherDeer->HornsBoxCollider)
+			{
 
-
-
-		//if (OtherDeer && OtherDeer != this && OtherComp == OtherDeer->HornsBoxCollider)
-		//{
-		//	GEngine->AddOnScreenDebugMessage(3, 5, FColor::Yellow, FString("Perfect"));
-
-
-		//	OtherDeer->AttachToComponent(HornsBoxCollider, FAttachmentTransformRules::SnapToTargetIncludingScale);
-
-		//	
-		//	
-
-		//}
+				OtherDeer->AttachToComponent(HornsBoxCollider, FAttachmentTransformRules::SnapToTargetIncludingScale);
+			}*/
+			
+		}
 
 
 	}
