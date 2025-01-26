@@ -5,6 +5,8 @@
 
 #include "DeerCharacter.h"
 #include "PlayerDeerController.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UDeerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
@@ -23,6 +25,13 @@ void UDeerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		FVector Velocity = DeerCharacter->GetVelocity();
 		Velocity.Z = 0.0;
 		Speed = Velocity.Size();
+
+		FRotator const AimRotation = DeerCharacter->GetBaseAimRotation();
+		FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(DeerCharacter->GetVelocity());
+
+		bIsFalling = DeerCharacter->GetCharacterMovement()->IsFalling();
+
+		MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation).Yaw;
 
 		if (DeerController)
 		{
