@@ -42,4 +42,8 @@ protected:
 	bool bIsAttacking;
 
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emote")
+	bool bIsEmote1;
+
+
 };
