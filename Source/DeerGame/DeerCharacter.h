@@ -108,4 +108,19 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes", Replicated)
 	bool bIsAttacking;
+
+
+	//RagDoll
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bIsRagdoll;
+
+
+	UFUNCTION(BlueprintCallable)
+	void RagDoll();
+
+	void FollowRagDoll(float Deltatime);
+
+	void EndRagdoll();
+
+
 };
