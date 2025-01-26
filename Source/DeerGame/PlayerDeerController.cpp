@@ -14,14 +14,23 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 
 APlayerDeerController::APlayerDeerController()
 {
 
 	bIsAttacking = false;
 	bIsRagdoll = false;
-	
 
+	bReplicates = true;
+
+}
+
+void APlayerDeerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(APlayerDeerController, bIsEmoting1);
 }
 
 void APlayerDeerController::BeginPlay()
@@ -33,7 +42,7 @@ void APlayerDeerController::BeginPlay()
 		Subsystem->AddMappingContext(DeerMappingContext, 0);
 	}
 
-	ProfileName = GetCharacter()->GetMesh()->GetCollisionProfileName();
+	//ProfileName = GetCharacter()->GetMesh()->GetCollisionProfileName();
 
 	if (DeerCharacter == nullptr)
 	{
@@ -68,6 +77,7 @@ void APlayerDeerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(RagDollAction, ETriggerEvent::Triggered, this, &APlayerDeerController::RagDoll);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &APlayerDeerController::Attack);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerDeerController::StopAttack);
+		EnhancedInputComponent->BindAction(Emote1Action, ETriggerEvent::Triggered, this, &APlayerDeerController::Emote1);
 
 	}
 
@@ -140,7 +150,7 @@ void APlayerDeerController::Attack()
 
 	
 	
-	DeerCharacter->HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+	//DeerCharacter->HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	if (!bIsAttacking)
 	{
 		bIsAttacking = true;
@@ -159,7 +169,7 @@ void APlayerDeerController::StopAttack()
 	GEngine->AddOnScreenDebugMessage(3, 5, FColor::Red, FString("StopAttacking"));
 	if (bIsAttacking)
 	{
-		DeerCharacter->HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+		//DeerCharacter->HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 		DeerCharacter->DecreaseSpeedOverTime();
 		bIsAttacking = false;
 
@@ -167,11 +177,8 @@ void APlayerDeerController::StopAttack()
 
 }
 
-void APlayerDeerController::UseAbility()
+void APlayerDeerController::UseAbility_Implementation()
 {
-
-
-
 
 }
 
@@ -210,7 +217,7 @@ void APlayerDeerController::FollowRagDoll(float Deltatime)
 	{
 		if (UCapsuleComponent* Capsule = Cast<UCapsuleComponent>(GetCharacter()->GetCapsuleComponent()) )
 		{
-			Capsule->SetWorldLocation(Mesh->GetSocketLocation(FName("Spine1")));
+			Capsule->SetWorldLocation(Mesh->GetSocketLocation(FName("Hip")));
 
 		}
 
@@ -231,7 +238,7 @@ void APlayerDeerController::EndRagdoll()
 	{
 		GetCharacter()->GetCapsuleComponent()->Activate();
 		Mesh->SetSimulatePhysics(false);
-		Mesh->SetCollisionProfileName(FName(ProfileName));
+		Mesh->SetCollisionProfileName(FName("CharacterMesh"));
 		Mesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 		GetCharacter()->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		Mesh->AttachToComponent(GetCharacter()->GetCapsuleComponent(),FAttachmentTransformRules::SnapToTargetIncludingScale);
@@ -242,4 +249,42 @@ void APlayerDeerController::EndRagdoll()
 	}
 
 
+}
+
+void APlayerDeerController::Emote1()
+{
+	if (HasAuthority())
+	{
+		bIsEmoting1 = true;
+	}
+	else
+	{
+		RPC_Server_Emote1();
+	}
+}
+
+bool APlayerDeerController::RPC_Server_Emote1_Validate()
+{
+	return true;
+}
+
+void APlayerDeerController::RPC_Server_Emote1_Implementation()
+{
+	bIsEmoting1 = true;
+}
+
+/*void APlayerDeerController::Emote1()
+{
+	bIsEmoting1 = true;
+	FTimerHandle TimerEmote1;
+	GetWorld()->GetTimerManager().SetTimer(TimerEmote1, this, &APlayerDeerController::EndEmote1, 2.0f);
+}*/
+
+
+
+
+void APlayerDeerController::EndEmote1()
+{
+	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Bitch"));
+	bIsEmoting1 = false;
 }

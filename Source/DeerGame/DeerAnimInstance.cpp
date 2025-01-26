@@ -36,6 +36,7 @@ void UDeerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		if (DeerController)
 		{
 			bIsAttacking = DeerController->bIsAttacking;
+			bIsEmote1 = DeerController->bIsEmoting1;
 		}
 
 	}
