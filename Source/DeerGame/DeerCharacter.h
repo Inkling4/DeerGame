@@ -61,6 +61,15 @@ public:
 	void DecreaseSpeedOverTime();
 
 
+
+	//Attack box Colliderstuff
+
+	UFUNCTION()
+	void EnableBoxCollision();
+
+	UFUNCTION()
+	void DisableBoxCollision();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	UStatusComponent* StatusComponent;
 };
