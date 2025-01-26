@@ -100,8 +100,6 @@ public:
 	
 
 	//Ragdoll
-	UPROPERTY()
-	FName ProfileName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bIsRagdoll;
@@ -113,5 +111,17 @@ public:
 
 	void EndRagdoll();
 
+	//Emote
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+	UInputAction* Emote1Action;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes")
+	bool bIsEmoting1 = false;
+
+	UFUNCTION(BlueprintCallable)
+	void Emote1();
+
+	UFUNCTION(BlueprintCallable)
+	void EndEmote1();
 	
 };
