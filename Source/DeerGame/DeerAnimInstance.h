@@ -44,6 +44,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emote")
 	bool bIsEmote1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emote")
+	bool bIsEmote2;
 
 
 };

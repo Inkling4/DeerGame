@@ -54,7 +54,7 @@ ADeerCharacter::ADeerCharacter()
 void ADeerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	//HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+	HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	HornsBoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ADeerCharacter::OnBoxBeginOverlap);
 }
 
@@ -119,7 +119,7 @@ void ADeerCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAct
 void ADeerCharacter::IncreaseSpeed()
 {
 	
-		GetCharacterMovement()->MaxAcceleration = 4048.0;
+		GetCharacterMovement()->MaxAcceleration = 3048.0;
 		GetCharacterMovement()->MaxWalkSpeed = 1000;
 
 		if (!GetWorld()->GetTimerManager().IsTimerActive(TimerHandle))
@@ -127,7 +127,7 @@ void ADeerCharacter::IncreaseSpeed()
 			GEngine->AddOnScreenDebugMessage(5, 5, FColor::Green, FString("hmm"));
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADeerCharacter::DecreaseSpeedOverTime, 3.0f);
 		}
-		//GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADeerCharacter::DecreaseSpeedOverTime, 3.0f);
+		
 	
 	
 
@@ -152,6 +152,20 @@ void ADeerCharacter::DecreaseSpeedOverTime()
 		GetCharacterMovement()->MaxWalkSpeed = 600;
 
 	}
+
+}
+
+void ADeerCharacter::EnableBoxCollision()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, FString("On"));
+	HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+
+}
+
+void ADeerCharacter::DisableBoxCollision()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, FString("Off"));
+	HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 
 }
 

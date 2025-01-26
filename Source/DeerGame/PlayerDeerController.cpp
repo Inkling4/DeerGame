@@ -69,6 +69,7 @@ void APlayerDeerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &APlayerDeerController::Attack);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerDeerController::StopAttack);
 		EnhancedInputComponent->BindAction(Emote1Action, ETriggerEvent::Triggered, this, &APlayerDeerController::Emote1);
+		EnhancedInputComponent->BindAction(Emote2Action, ETriggerEvent::Triggered, this, &APlayerDeerController::Emote2);
 
 	}
 
@@ -141,9 +142,10 @@ void APlayerDeerController::Attack()
 
 	
 	
-	//DeerCharacter->HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+	
 	if (!bIsAttacking)
 	{
+		DeerCharacter->EnableBoxCollision();
 		bIsAttacking = true;
 		DeerCharacter->IncreaseSpeed();
 		FTimerHandle Time;
@@ -160,7 +162,7 @@ void APlayerDeerController::StopAttack()
 	GEngine->AddOnScreenDebugMessage(3, 5, FColor::Red, FString("StopAttacking"));
 	if (bIsAttacking)
 	{
-		//DeerCharacter->HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+		DeerCharacter->DisableBoxCollision();
 		DeerCharacter->DecreaseSpeedOverTime();
 		bIsAttacking = false;
 
@@ -248,12 +250,23 @@ void APlayerDeerController::EndRagdoll()
 void APlayerDeerController::Emote1()
 {
 	bIsEmoting1 = true;
-	FTimerHandle TimerEmote1;
-	//GetWorld()->GetTimerManager().SetTimer(TimerEmote1, this, &APlayerDeerController::EndEmote1, 2.0f);
+	
 }
 
 void APlayerDeerController::EndEmote1()
 {
 	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, FString("Bitch"));
 	bIsEmoting1 = false;
+}
+
+void APlayerDeerController::Emote2()
+{
+
+	bIsEmoting2 = true;
+}
+
+void APlayerDeerController::EndEmote2()
+{
+
+	bIsEmoting2 = false;
 }

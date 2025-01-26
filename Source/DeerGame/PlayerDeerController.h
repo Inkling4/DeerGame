@@ -115,13 +115,25 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
 	UInputAction* Emote1Action;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+	UInputAction* Emote2Action;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes")
 	bool bIsEmoting1 = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes")
+	bool bIsEmoting2 = false;
 
 	UFUNCTION(BlueprintCallable)
 	void Emote1();
 
 	UFUNCTION(BlueprintCallable)
 	void EndEmote1();
+
+	UFUNCTION(BlueprintCallable)
+	void Emote2();
+
+	UFUNCTION(BlueprintCallable)
+	void EndEmote2();
 	
 };
