@@ -118,11 +118,16 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
 	UInputAction* Emote2Action;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+	UInputAction* Emote3Action;
 	
 	UFUNCTION()
 	void Emote1();
 
 	UFUNCTION(BlueprintCallable)
 	void Emote2();
+	UFUNCTION(BlueprintCallable)
+	void Emote3();
 	
 };

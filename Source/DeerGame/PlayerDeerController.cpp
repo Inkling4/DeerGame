@@ -66,6 +66,7 @@ void APlayerDeerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerDeerController::StopAttack);
 		EnhancedInputComponent->BindAction(Emote1Action, ETriggerEvent::Triggered, this, &APlayerDeerController::Emote1);
 		EnhancedInputComponent->BindAction(Emote2Action, ETriggerEvent::Triggered, this, &APlayerDeerController::Emote2);
+		EnhancedInputComponent->BindAction(Emote3Action, ETriggerEvent::Triggered, this, &APlayerDeerController::Emote3);
 
 	}
 
@@ -200,6 +201,15 @@ void APlayerDeerController::Emote2()
 	{
 		DeerCharacter->Emote2();
 	}
+}
+
+void APlayerDeerController::Emote3()
+{
+	if (IsValid(DeerCharacter))
+	{
+		DeerCharacter->Emote3();
+	}
+
 }
 
 void APlayerDeerController::Attack()
