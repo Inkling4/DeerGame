@@ -15,7 +15,7 @@ ADeerCharacter::ADeerCharacter()
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
-	bUseControllerRotationYaw = false;
+	bUseControllerRotationYaw = true;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -33,7 +33,7 @@ ADeerCharacter::ADeerCharacter()
 	//Player rotation rate
 
 	
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 600.f, 0.0f);
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.f, 0.0f);
 	GetCharacterMovement()->bIgnoreBaseRotation = true;
 
 	Horns = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Horns"));
@@ -53,7 +53,7 @@ ADeerCharacter::ADeerCharacter()
 void ADeerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	HornsBoxCollider->Deactivate();
+	HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	HornsBoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ADeerCharacter::OnBoxBeginOverlap);
 }
 

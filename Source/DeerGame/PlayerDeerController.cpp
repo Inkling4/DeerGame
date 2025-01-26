@@ -138,9 +138,9 @@ void APlayerDeerController::Attack()
 
 	//bIsAttacking = true;
 
-	DeerCharacter->HornsBoxCollider->Activate();
 	
-
+	
+	DeerCharacter->HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	if (!bIsAttacking)
 	{
 		bIsAttacking = true;
@@ -159,7 +159,7 @@ void APlayerDeerController::StopAttack()
 	GEngine->AddOnScreenDebugMessage(3, 5, FColor::Red, FString("StopAttacking"));
 	if (bIsAttacking)
 	{
-		DeerCharacter->HornsBoxCollider->Deactivate();
+		DeerCharacter->HornsBoxCollider->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 		DeerCharacter->DecreaseSpeedOverTime();
 		bIsAttacking = false;
 
