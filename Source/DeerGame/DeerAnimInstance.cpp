@@ -32,6 +32,7 @@ void UDeerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsFalling = DeerCharacter->GetCharacterMovement()->IsFalling();
 		bIsEmote1 = DeerCharacter->bIsEmoting1;
 		bIsEmote2 = DeerCharacter->bIsEmoting2;
+		bIsEmote3 = DeerCharacter->bIsEmoting3;
 		bIsAttacking = DeerCharacter->bIsAttacking;
 		
 		if (GEngine && bIsEmote1) GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Black, FString::Printf(TEXT("%hs"), bIsEmote1 ? "true" : "false"));

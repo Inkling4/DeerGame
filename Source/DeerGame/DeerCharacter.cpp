@@ -225,6 +225,12 @@ void ADeerCharacter::CPPStopAttack()
 
 }
 
+void ADeerCharacter::Emote3_Implementation()
+{
+
+	return;
+}
+
 void ADeerCharacter::RagDoll()
 {
 

@@ -87,6 +87,8 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Emotes")
 	void Emote2();
+	UFUNCTION(BlueprintNativeEvent, Category = "Emotes")
+	void Emote3();
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Attack")
 	void Attack();
@@ -105,6 +107,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes", Replicated)
 	bool bIsEmoting2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes", Replicated)
+	bool bIsEmoting3;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotes", Replicated)
 	bool bIsAttacking;
