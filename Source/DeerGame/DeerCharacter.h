@@ -121,6 +121,9 @@ public:
 	bool bIsRagdoll;
 
 
+	UFUNCTION(BlueprintNativeEvent, Category = "Ragdoll")
+	void RagdollEvent();
+
 	UFUNCTION(BlueprintCallable)
 	void RagDoll();
 

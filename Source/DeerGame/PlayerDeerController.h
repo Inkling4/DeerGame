@@ -39,6 +39,9 @@ protected:
 
 public:
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TEST")
+	int PlayerID = -1;
+
 	UPROPERTY(BlueprintReadWrite, Category = "Inputs")
 	ADeerCharacter* DeerCharacter;
 
@@ -104,6 +107,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bIsRagdoll;
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Ragdoll")
+	void RagdollEvent();
 
 	UFUNCTION(BlueprintCallable)
 	void RagDoll();

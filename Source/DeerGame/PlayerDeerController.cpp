@@ -61,7 +61,7 @@ void APlayerDeerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerDeerController::CameraLook);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerDeerController::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &APlayerDeerController::StopJump);
-		EnhancedInputComponent->BindAction(RagDollAction, ETriggerEvent::Triggered, this, &APlayerDeerController::RagDoll);
+		EnhancedInputComponent->BindAction(RagDollAction, ETriggerEvent::Triggered, this, &APlayerDeerController::RagdollEvent);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &APlayerDeerController::Attack);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &APlayerDeerController::StopAttack);
 		EnhancedInputComponent->BindAction(Emote1Action, ETriggerEvent::Triggered, this, &APlayerDeerController::Emote1);
@@ -134,6 +134,11 @@ void APlayerDeerController::UseAbility()
 
 }
 
+void APlayerDeerController::RagdollEvent_Implementation()
+{
+	RagDoll();
+}
+
 void APlayerDeerController::RagDoll()
 {
 	if (bIsRagdoll)
@@ -144,7 +149,7 @@ void APlayerDeerController::RagDoll()
 	SetIgnoreMoveInput(true);
 	if (IsValid(DeerCharacter))
 	{
-		DeerCharacter->RagDoll();
+		DeerCharacter->RagdollEvent();
 
 	}
 	bIsRagdoll = true;

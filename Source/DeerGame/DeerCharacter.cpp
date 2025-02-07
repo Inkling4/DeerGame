@@ -231,6 +231,11 @@ void ADeerCharacter::Emote3_Implementation()
 	return;
 }
 
+void ADeerCharacter::RagdollEvent_Implementation()
+{
+	RagDoll();
+}
+
 void ADeerCharacter::RagDoll()
 {
 
@@ -283,14 +288,35 @@ void ADeerCharacter::EndRagdoll()
 	{
 		return;
 	}
+
 	SpringArm->bDoCollisionTest = false;
-	GetCapsuleComponent()->Activate();
+
+	FVector SetPosition = GetActorTransform().GetLocation();
+
+	FVector Start = GetActorTransform().GetLocation() + (GetActorUpVector() * 100.f);
+	FVector End = Start - (GetActorUpVector() * 500.f);
+
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility, Params, FCollisionResponseParams()))
+	{
+		SetPosition = HitResult.Location + FVector(0.f, 0.f, 110.f);
+	}
+
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 5.0f);
+		GetCapsuleComponent()->Activate();
 	GetMesh()->SetSimulatePhysics(false);
 	GetMesh()->SetCollisionProfileName(FName("CharacterMesh"));
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
-	GetMesh()->SetRelativeLocationAndRotation(FVector(-7.0, 0.0, -90), FRotator(0.0, -90.0, 0.0));
+
+	SetActorLocation(SetPosition);
+	GetMesh()->SetRelativeLocationAndRotation(FVector(-7.f,  0.f, -90.f), FRotator(0.0, -90.0, 0.0));
+	GetMovementComponent()->Velocity = FVector::ZeroVector;
+
 	if (APlayerDeerController* DeerController = Cast<APlayerDeerController>(GetController()))
 	{
 		DeerController->EndRagdoll();

@@ -13,7 +13,9 @@ class ADeerGameGameMode : public AGameModeBase
 
 public:
 	ADeerGameGameMode();
+
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Player Login")
+	void PostLoginEvent(APlayerController* NewPlayer);
 };
-
-
-
